@@ -9,30 +9,30 @@ const preFetch = (req, res, next) => {
   next();
 };
 
-// NB Important: L'ordre des routes dans Express est important
+// NB Important: L'ordre des routes dans Express est pris en compte
 
-// SERVICE EMAILS
+// APP TRACKER GPS
 app.use(
-  "/emails",
+  "/v1",
   preFetch,
   createProxyMiddleware({
-    target: "http://localhost:5003",
+    target: "http://localhost:5001",
     changeOrigin: true,
     pathRewrite: {
-      "^/api/": "/",
+      "^/v1": "", // Retirer le préfixe /v1 de l'URL
     },
   })
 );
 
-// APP TRACKER GPS
+// SERVICE EMAILS
 app.use(
-  "/",
+  "/emails/api",
   preFetch,
   createProxyMiddleware({
-    target: "http://localhost:5001",
+    target: "http://localhost:5003",
     changeOrigin: true,
   })
 );
 
 const PORT = 8000;
-app.listen(PORT, () => console.log("API GATEWAY STARTED"));
+app.listen(PORT, () => console.log("API GATEWAY STARTED ON PORT 8000"));
